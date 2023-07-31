@@ -3,6 +3,7 @@ import 'package:mongo_dart/mongo_dart.dart';
 class MongoDatabase{
 
   static String colHistory = 'history';
+  static String colUser = 'user';
 
   static Db db = Db('');
 

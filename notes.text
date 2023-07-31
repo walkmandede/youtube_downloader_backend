@@ -1,0 +1,6 @@
+
+gcloud run deploy abcdefg \
+  --source build \
+  --project=firstbackend-394110 \
+  --region=asia-southeast1-a \
+  --allow-unauthenticated
