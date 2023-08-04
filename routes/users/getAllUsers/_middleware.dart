@@ -17,9 +17,7 @@ Handler middleware(Handler handler) {
     try{
       final payload = await context.request.json() as Map;
 
-      final userCol = mongoDatabase.getCollection(colName: MongoDatabase.colUser);
-      final readResult = await userCol.find(
-          where.eq('phone', payload['phone'].toString()),).toList();
+      final readResult = await mongoDatabase.getCollectionAllData(colName: MongoDatabase.colUser);
       if(readResult.isEmpty){
         responseBody = {
           'meta' : {
@@ -29,25 +27,21 @@ Handler middleware(Handler handler) {
         };
       }
       else{
-        final userModel = UserModel.fromMongo(data: readResult.first);
 
-        if(userModel.password == payload['password']){
-          responseBody = {
-            'meta' : {
-              'success' : true,
-              'message' : 'Login Success',
-            },
-            'body' : userModel.toMap()
-          };
+        final result = <dynamic>[];
+
+        for (final each in readResult) {
+          final userModel = UserModel.fromMongo(data: each);
+          result.add(userModel.toMap());
         }
-        else{
-          responseBody = {
-            'meta' : {
-              'success' : false,
-              'message' : 'Incorrect Password!',
-            },
-          };
-        }
+
+        responseBody = {
+          'meta' : {
+            'success' : true,
+            'message' : 'Login Success',
+          },
+          'body' : result
+        };
       }
 
     }
