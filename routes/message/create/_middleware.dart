@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:dart_frog/dart_frog.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 import '../../../controllers/data_controller.dart';
+import '../../../models/message_model.dart';
 import '../../../models/user_model.dart';
 import '../../../models/watched_history.dart';
 import '../../../utils/services/mongo_services.dart';
@@ -14,10 +15,10 @@ Handler middleware(Handler handler) {
   return (context) async {
 
     final resp = await handler(context);
-    var responseBody = <dynamic,dynamic>{
+    var responseBody = <String,dynamic>{
       'meta' : {
         'success' : false,
-        'message' : 'Something went wrong!'
+        'message' : 'Please fill all required data'
       }
     };
 
@@ -25,46 +26,43 @@ Handler middleware(Handler handler) {
       final payload = await context.request.json() as Map;
       final userCol = mongoDatabase.getCollection(colName: MongoDatabase.colUser);
 
-      if(payload['name']==null){
+
+      if(payload['message']==null){
 
       }
-      else if(payload['phone']==null){
+      else if(payload['from']==null){
 
       }
-      else if(payload['dob']==null){
-
-      }
-      else if(payload['password']==null){
+      else if(payload['to']==null){
 
       }
       else{
         final readResult = await userCol.find(
-          where.eq('phone', payload['phone'].toString()),).toList();
-        if(readResult.isNotEmpty){
-          responseBody = {
-            'meta' : {
-              'success' : false,
-              'message' : 'This phone is already registered',
-            },
-          };
+            where
+                .eq('_id', ObjectId.parse(payload['from'].toString()))
+                .or(where
+                .eq('_id', ObjectId.parse(payload['to'].toString())),
+            )
+        ).toList();
+
+        if(readResult.isEmpty){
+          responseBody['meta']['message'] = 'There is no such users';
         }
         else{
           final writeResult = await mongoDatabase.insertDataIntoCollection(
-            colName: MongoDatabase.colUser,
-            data: UserModel(
+            colName: MongoDatabase.colMessage,
+            data: MessageModel(
               id: '',
-              name: payload['name'].toString(),
-              phone: payload['phone'].toString(),
-              dob: DateTime.tryParse(payload['dob'].toString())??DateTime(0),
-              password: payload['password'].toString(),
-            ).toMap(),
+              message: payload['message'].toString(),
+              from: payload['from'].toString(),
+              to: payload['to'].toString(),
+              dateTime: DateTime.now(),).toMap(),
           );
-
           if(writeResult!.isSuccess){
             responseBody = {
               'meta' : {
                 'success' : true,
-                'message' : 'User Created Successfully'
+                'message' : 'Message Created Successfully'
               },
             };
           }
@@ -83,7 +81,7 @@ Handler middleware(Handler handler) {
       responseBody = {
         'meta' : {
           'success' : false,
-          'message' : 'Something went wrong! ${e.toString()}'
+          'message' : 'Something went wrong! ${e}'
         },
       };
     }
