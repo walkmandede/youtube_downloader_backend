@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:dart_frog/dart_frog.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 import '../../../models/user_model.dart';
+import '../../../utils/app_constants.dart';
 import '../../../utils/services/mongo_services.dart';
 
 Handler middleware(Handler handler) {
@@ -15,8 +16,6 @@ Handler middleware(Handler handler) {
     var responseBody = <dynamic,dynamic>{};
 
     try{
-      final payload = await context.request.json() as Map;
-
       final readResult = await mongoDatabase.getCollectionAllData(colName: MongoDatabase.colUser);
       if(readResult.isEmpty){
         responseBody = {
