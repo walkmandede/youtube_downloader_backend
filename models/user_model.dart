@@ -3,6 +3,16 @@ import '../utils/services/mongo_services.dart';
 
 class UserModel{
 
+  factory UserModel.fromMongo({required Map<dynamic,dynamic> data}){
+    return UserModel(
+      id: MongoDatabase().idParser(data),
+      name: data['name'].toString(),
+      password: data['password'].toString(),
+      dob: DateTime.tryParse(data['dob'].toString())??DateTime(0),
+      phone: data['phone'].toString()
+    );
+  }
+
   UserModel({
     required this.id,
     required this.name,
@@ -19,21 +29,12 @@ class UserModel{
 
   Map<String,dynamic> toMap(){
     return {
+      'id' : id,
       'name' : name,
       'phone' : phone,
       'dob' : dob.toString(),
       'password' : password
     };
-  }
-
-  factory UserModel.fromMongo({required Map data}){
-    return UserModel(
-      id: MongoDatabase().idParser(data),
-      name: data['name'].toString(),
-      password: data['password'].toString(),
-      dob: DateTime.tryParse(data['dob'].toString())??DateTime(0),
-      phone: data['phone'].toString()
-    );
   }
 
 }
