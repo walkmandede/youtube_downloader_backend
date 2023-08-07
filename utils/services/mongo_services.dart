@@ -57,4 +57,8 @@ class MongoDatabase{
     return writeResult;
   }
 
+  Map<String,dynamic> findThatInArray({required dynamic data}){
+    return {r'$elemMatch': {r'$eq': data}};
+  }
+
 }

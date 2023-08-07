@@ -29,13 +29,14 @@ Handler middleware(Handler handler) {
         final id = parameters['id']!;
         final groupCol = mongoDatabase.getCollection(colName: MongoDatabase.colGroup);
         final result = await groupCol.find(
-          where.eq('members', {r'$elemMatch': {r'$eq': id}}),
+          where.eq('members', MongoDatabase().findThatInArray(data: id)),
         ).toList();
         responseBody = {
           'meta' : {
             'success' : true,
-            'message' : result
+            'message' : "Group Fetched Success"
           },
+          'data' : result
         };
       }
       catch(e){
