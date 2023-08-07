@@ -39,8 +39,10 @@ Handler middleware(Handler handler) {
 
         final readResult = await userCol.find(
             where
-                .eq('_id',fromId)
-                .eq('_id',toId)
+                .eq('_id', ObjectId.parse(payload['from'].toString()))
+                .or(where
+                .eq('_id', ObjectId.parse(payload['to'].toString())),
+            )
         ).toList();
 
         if(readResult.isEmpty){
@@ -51,6 +53,10 @@ Handler middleware(Handler handler) {
               where
                   .eq('from', fromId.$oid)
                   .eq('to', toId.$oid)
+                  .or(
+                where.eq('to', fromId.$oid)
+                    .eq('from', toId.$oid)
+              )
           ).toList();
           responseBody = {
             'meta' : {
