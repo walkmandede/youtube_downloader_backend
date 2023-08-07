@@ -5,6 +5,7 @@ class MongoDatabase{
   static String colHistory = 'history';
   static String colUser = 'user';
   static String colMessage = 'message';
+  static String colGroup = 'group';
 
   static Db db = Db('');
 

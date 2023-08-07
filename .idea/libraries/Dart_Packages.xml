@@ -61,7 +61,7 @@
         <entry key="collection">
           <value>
             <list>
-              <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/collection-1.18.0/lib" />
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/collection-1.17.2/lib" />
             </list>
           </value>
         </entry>
@@ -510,7 +510,7 @@
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/boolean_selector-2.1.1/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/bson-4.0.0/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/buffer-1.2.0/lib" />
-      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/collection-1.18.0/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/collection-1.17.2/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/convert-3.1.1/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/coverage-1.6.3/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/crypto-3.0.3/lib" />
